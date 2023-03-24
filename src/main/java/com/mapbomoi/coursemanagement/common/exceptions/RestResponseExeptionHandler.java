@@ -2,6 +2,7 @@ package com.mapbomoi.coursemanagement.common.exceptions;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -12,6 +13,8 @@ import java.util.List;
 
 @RestControllerAdvice
 public class RestResponseExeptionHandler extends ResponseEntityExceptionHandler {
+    private final String INTERNAL_SERVER_ERROR = "Unexpected error happened on our system";
+
     @ExceptionHandler({ InvalidRequestException.class })
     public ResponseEntity<Object> handleInvalidRequest(InvalidRequestException e, WebRequest request) {
         return ResponseEntity.badRequest().body(e.getMessage());
@@ -25,6 +28,11 @@ public class RestResponseExeptionHandler extends ResponseEntityExceptionHandler 
 
     @ExceptionHandler({ ResourceNotFoundException.class })
     public ResponseEntity<Object> handleResourceNotFound(ResourceNotFoundException e, WebRequest request) {
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    }
+
+    @ExceptionHandler({ Exception.class })
+    public ResponseEntity<Object> handleGeneralException(Exception e, WebRequest request) {
+        return ResponseEntity.internalServerError().body(INTERNAL_SERVER_ERROR);
     }
 }

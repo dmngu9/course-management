@@ -1,17 +1,17 @@
-package com.mapbomoi.coursemanagement.courses;
+package com.mapbomoi.coursemanagement.courses.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Date;
 
 @Entity
 @Table(name = Course.TABLE)
-@Getter
+@Data
 public class Course {
     public static final String TABLE = "course";
 

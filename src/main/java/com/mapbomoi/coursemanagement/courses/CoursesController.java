@@ -1,9 +1,10 @@
 package com.mapbomoi.coursemanagement.courses;
 
 import com.mapbomoi.coursemanagement.common.exceptions.InvalidRequestException;
+import com.mapbomoi.coursemanagement.common.exceptions.ResourceNotFoundException;
+import com.mapbomoi.coursemanagement.courses.dto.CourseDTO;
+import com.mapbomoi.coursemanagement.courses.entity.Course;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,14 +14,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
-
 @RestController
 @RequestMapping("/api/v1/courses")
 @Validated
 public class CoursesController {
     @Autowired
-    CoursesService coursesService;
+    private CoursesService coursesService;
+
+    @Autowired
+    private CourseMapper courseMapper;
 
     @GetMapping(path = "/{courseId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CourseDTO> courseById(
@@ -34,7 +36,8 @@ public class CoursesController {
         } catch (NumberFormatException e) {
             throw new InvalidRequestException("courseId must be a number");
         }
-        CourseDTO courseDTO = coursesService.findCourseById(id);
+        Course course = coursesService.findCourseById(id).orElseThrow(() -> new ResourceNotFoundException("Course with ID: " + id + " does not exist in our system"));
+        CourseDTO courseDTO = courseMapper.toCourseDTO(course);
         return ResponseEntity
                 .ok()
                 .body(courseDTO);
