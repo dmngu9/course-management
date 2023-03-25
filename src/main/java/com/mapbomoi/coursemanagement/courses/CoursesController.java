@@ -5,6 +5,8 @@ import com.mapbomoi.coursemanagement.common.exceptions.ResourceNotFoundException
 import com.mapbomoi.coursemanagement.courses.dto.CourseDTO;
 import com.mapbomoi.coursemanagement.courses.entity.Course;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/courses")
 @Validated
+@Setter
 public class CoursesController {
     @Autowired
     private CoursesService coursesService;

@@ -2,12 +2,14 @@ package com.mapbomoi.coursemanagement.courses.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
 @Data
+@AllArgsConstructor
 public class CourseDTO {
     @NotNull
     private Long id;
