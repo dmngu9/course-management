@@ -84,7 +84,7 @@ class CoursesControllerTest {
                 Date.valueOf(LocalDate.of(2023, 12, 1))
         );
         when(coursesService.findCourseById(courseId)).thenReturn(Optional.of(course));
-
+        System.out.println(objectMapper.writeValueAsString(courseDTO));
         mockMvc.perform(get("/api/v1/courses/10"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(courseDTO)));

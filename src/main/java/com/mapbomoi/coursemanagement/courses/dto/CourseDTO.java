@@ -4,7 +4,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -24,11 +23,13 @@ public class CourseDTO {
 
     @NotNull
     @NotBlank
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private String department;
+
+    @NotNull
+    @NotBlank
     private LocalDate startDate;
 
     @NotNull
     @NotBlank
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate endDate;
 }

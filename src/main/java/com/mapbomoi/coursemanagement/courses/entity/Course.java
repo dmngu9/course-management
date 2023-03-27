@@ -1,18 +1,20 @@
 package com.mapbomoi.coursemanagement.courses.entity;
 
+import com.mapbomoi.coursemanagement.departments.entity.Department;
+import com.mapbomoi.coursemanagement.instructors.entity.Instructor;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
+import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import java.sql.Date;
 
 @Entity
 @Table(name = Course.TABLE)
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class Course {
     public static final String TABLE = "course";
@@ -25,27 +27,31 @@ public class Course {
 
     @Column(name = "name")
     @NotNull
-    @NotBlank
-    @Max(256)
+    @Length(min = 1, max = 256)
     private String name;
 
     @Column(name = "description")
     @NotNull
-    @NotBlank
-    @Max(256)
+    @Length(min = 1, max = 256)
     private String description;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id")
+    @NotNull
+    private Department department;
+
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "instructor_id")
+    @NotNull
+    private Instructor instructor;
 
     @Column(name = "start_date")
     @NotNull
-    @NotBlank
-    @Max(10)
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @Length(min = 10, max = 10)
     private Date startDate;
 
     @Column(name = "end_date")
     @NotNull
-    @NotBlank
-    @Max(10)
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @Length(min = 10, max = 10)
     private Date endDate;
 }
