@@ -1,5 +1,7 @@
 package com.mapbomoi.coursemanagement.instructors.entity;
 
+import com.mapbomoi.coursemanagement.common.enums.PersistableEnum;
+import com.mapbomoi.coursemanagement.common.enums.PersistableEnumConverter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -8,8 +10,6 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
-
-import java.util.stream.Stream;
 
 @Entity
 @Table(name = Instructor.TABLE)
@@ -56,56 +56,35 @@ public class Instructor {
 
     @AllArgsConstructor
     @Getter
-    public enum EmploymentType {
+    public enum EmploymentType implements PersistableEnum<String> {
         FULL_TIME("full-time"),
         PART_TIME("part-time"),
         CASUAL("casual");
 
-        private final String employmentType;
+        private final String value;
     }
 
     @Converter(autoApply = true)
-    public static class EmploymentTypeConvert implements AttributeConverter<EmploymentType, String> {
+    public static class EmploymentTypeConvert extends PersistableEnumConverter<EmploymentType, String> {
 
-        @Override
-        public String convertToDatabaseColumn(EmploymentType employmentType) {
-            return employmentType == null ? null : employmentType.getEmploymentType();
-        }
-
-        @Override
-        public EmploymentType convertToEntityAttribute(String employmentType) {
-            if (employmentType == null) return null;
-            return Stream.of(EmploymentType.values())
-                    .filter(e -> e.getEmploymentType().equals(employmentType))
-                    .findFirst()
-                    .orElseThrow(IllegalArgumentException::new);
+        public EmploymentTypeConvert() {
+            super(EmploymentType.class);
         }
     }
 
     @AllArgsConstructor
     @Getter
-    public enum ContractStatus {
+    public enum ContractStatus implements PersistableEnum<String> {
         ACTIVE("active"),
         INACTIVE("inactive");
 
-        private final String status;
+        private final String value;
     }
 
     @Converter(autoApply = true)
-    public static class ContractStatusConverter implements AttributeConverter<ContractStatus, String> {
-
-        @Override
-        public String convertToDatabaseColumn(ContractStatus contractStatus) {
-            return contractStatus == null ? null : contractStatus.getStatus();
-        }
-
-        @Override
-        public ContractStatus convertToEntityAttribute(String s) {
-            if (s == null) return null;
-            return Stream.of(ContractStatus.values())
-                    .filter(c -> c.getStatus().equals(s))
-                    .findFirst()
-                    .orElseThrow(IllegalArgumentException::new);
+    public static class ContractStatusConverter extends PersistableEnumConverter<ContractStatus, String> {
+        public ContractStatusConverter() {
+            super(ContractStatus.class);
         }
     }
 }
