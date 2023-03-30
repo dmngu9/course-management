@@ -1,5 +1,6 @@
 package com.mapbomoi.coursemanagement.courses.dto;
 
+import com.mapbomoi.coursemanagement.instructors.dto.InstructorDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,9 @@ public class CourseDTO {
     @NotNull
     @NotBlank
     private String department;
+
+    @NotNull
+    private InstructorDTO instructor;
 
     @NotNull
     @NotBlank
